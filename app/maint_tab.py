@@ -193,7 +193,7 @@ button_export = {
     'boxShadow': '0 2px 8px rgba(136, 192, 0, 0.3)',
     'letterSpacing': '0.5px',
     'textTransform': 'uppercase',
-    'margin' : '0 20px'
+    'margin' : '20px 20px'
 }
 
 

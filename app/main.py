@@ -463,6 +463,8 @@ def update_cytoscape_table(tab,niveau, domaine_principal1,  domaine_principal2, 
 
         print("Nouveau nœud ajouté au dataframe :", new_row)
 
+        utils.df.to_excel('app/database.xlsx', index=False)
+
         shape = utils.forme_dico[niveau_val]
         couleur = utils.couleur_dico[nature_val]
         taille = int(influence_val) * 8
@@ -480,8 +482,17 @@ def update_cytoscape_table(tab,niveau, domaine_principal1,  domaine_principal2, 
         else:
             label_size = 15
 
-        ligne = [ shape, couleur, taille, acronyme, l_color, label_size, nom]
-        utils.df_nodes.loc[len(utils.df_nodes)] = ligne
+        # Créer une nouvelle ligne avec toutes les colonnes requises incluant 'id'
+        new_style_row = {
+            'Shape': shape,
+            'Couleur': couleur,
+            'Taille': taille,
+            'Label': acronyme,
+            'Label_Couleur': l_color,
+            'Label_Size': label_size,
+            'id': nom
+        }
+        utils.df_nodes = pd.concat([utils.df_nodes, pd.DataFrame([new_style_row])], ignore_index=True)
 
         if zoom_flag:
             elements = callback_sous_graphe(data, niveau, domaine_principal, domaine, poles, nature, doublon, selected_pole)
@@ -489,8 +500,7 @@ def update_cytoscape_table(tab,niveau, domaine_principal1,  domaine_principal2, 
         else:
             elements, _ = filtres_callbacks(niveau, domaine_principal, domaine, poles, nature, doublon, selected_pole)
 
-        
-
+        # Retourner le stylesheet avec le df_nodes mis à jour
         return elements, table_data, layout, True, utils.generate_stylesheet(utils.df_nodes, edges_width), stored_elements, data_table, zoom_flag
 
 

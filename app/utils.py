@@ -25,7 +25,7 @@ def generate_random_color():
 
 #Importation de la bdd
 
-df = pd.read_excel('app/detabase2-0.xlsx')
+df = pd.read_excel('app/database.xlsx')
 df.columns = ['Nom','Acronyme', 'Niveau', 'Pole', 'Domaine_principal', 'Domaine',  'Nature', 'Influence', 'Interaction', 'Doublon', 'Commentaires', 'Site',1,2]
 # Correction du FutureWarning : conversion explicite avant fillna
 for col in df.columns:
@@ -472,6 +472,8 @@ def generate_stylesheet(df_nodes_param, edges_width):
     bo = 0.9
     for _, row in df_nodes_param.iterrows():
         if row['Label'] in base_liste + ['IM', 'ADT'] + list(domaine_options):
+            if row['id'] == "test_couleur12":
+                print(f'base_liste : {base_liste}, domaine_options: {domaine_options}')
             text_valign = 'center'
             bo = 0
             # Style spécial pour les nœuds structurels (pôles et domaines principaux)
@@ -482,6 +484,10 @@ def generate_stylesheet(df_nodes_param, edges_width):
 
         selector = f'node[id="{row["id"]}"]'
         
+        if row['id'] == "test_couleur12":
+            print(row['Couleur'])
+            print(bo)
+
         # Style de base pour tous les nœuds
         style = {
             'label': row['Label'],
@@ -508,6 +514,7 @@ def generate_stylesheet(df_nodes_param, edges_width):
             # Vérifier dans le dataframe si le nœud a un statut de doublon
             node_doublon_status = None
             if row['id'] in df['Nom'].values:
+                
                 try:
                     node_doublon_status = df[df['Nom'] == row['id']]['Doublon'].iloc[0]
                 except:
@@ -547,11 +554,12 @@ def generate_stylesheet(df_nodes_param, edges_width):
                 style['shadow-opacity'] = 0.4
                 style['font-size'] = '56'
                 style['label'] = ''
+
             elif row['Label'] in domaine_principal_options:  # Domaines principaux
                 style['font-size'] = '30'
                 style['text-transform'] = 'uppercase'
                 
-                
+        bo = 0.9
         stylesheet.append({'selector': selector, 'style': style})
     
     # Style global pour les arêtes
