@@ -1,0 +1,14 @@
+dash
+dash-cytoscape
+dash-bootstrap-components
+dash-auth
+networkx
+numpy
+pandas
+gunicorn
+openpyxl
+dash_extensions
+XlsxWriter
+
+
+
