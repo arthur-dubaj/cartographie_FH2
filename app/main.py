@@ -99,9 +99,9 @@ def set_selected_pole(n_innov, n_bus, n_ind):
 
     btn = ctx.triggered[0]['prop_id'].split('.')[0]
     mapping = {
-        'btn-pole-utiliser': utils.poles[1],
-        'btn-pole-deployer': utils.poles[0],
-        'btn-pole-produire': utils.poles[2],
+        'btn-pole-utiliser': utils.poles[2],
+        'btn-pole-deployer': utils.poles[1],
+        'btn-pole-produire': utils.poles[0],
         '' : utils.poles[0]
     }
 
@@ -196,9 +196,9 @@ Output('btn-pole-produire','className')],
 
 def highlight_pole(selected):
     base = 'pole-btn' # facultatif : classe de base si vous en avez
-    c_utiliser = base + (' pole-selected' if selected == 'Utiliser' else '')
-    c_deployer = base + (' pole-selected' if selected == 'Déployer' else '')
-    c_produire = base + (' pole-selected' if selected == 'Produire' else '')
+    c_utiliser = base + (' pole-selected' if selected == utils.poles[2] else '')
+    c_deployer = base + (' pole-selected' if selected == utils.poles[1] else '')
+    c_produire = base + (' pole-selected' if selected == utils.poles[0] else '')
     return c_utiliser, c_deployer, c_produire
 
 
@@ -263,6 +263,15 @@ def filtres_callbacks(niveau, domaine_principal, domaine, poles, nature, doublon
         if n not in utils.base_liste:
             dom = (utils.df).loc[(utils.df)['Nom'] == n, 'Domaine_principal'].iloc[0]
             dico_nbr[dom] += 1
+
+    for dom in dico_nbr.keys():
+        if dico_nbr[dom] == 0:
+            node_liste = node_liste[node_liste != dom]
+            filtered_edges = [edge for edge in filtered_edges if
+                    edge['data']['source'] != dom and
+                    edge['data']['target'] != dom]
+
+
 
     # Créer les éléments du graphe pour Cytoscape
     elements = filtered_edges + [

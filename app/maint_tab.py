@@ -221,11 +221,11 @@ main_tab = dcc.Tab(
                 html.Div([
                     # Buttons to choose pole
                     html.Div([
-                        html.Button('Pôle Production', id='btn-pole-produire', n_clicks=0,
+                        html.Button(utils.poles[0], id='btn-pole-produire', n_clicks=0,
                                     style=button_pole),
-                        html.Button('Pôle Déploiement', id='btn-pole-deployer', n_clicks=0,
+                        html.Button(utils.poles[1], id='btn-pole-deployer', n_clicks=0,
                                     style=button_pole),
-                        html.Button('Pôle Utilisation', id='btn-pole-utiliser', n_clicks=0,
+                        html.Button(utils.poles[2], id='btn-pole-utiliser', n_clicks=0,
                                     style=button_pole)
                     ], style={'display': 'flex', 'justifyContent': 'center', 'marginBottom': '12px'}),
 

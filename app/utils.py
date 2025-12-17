@@ -26,7 +26,7 @@ def generate_random_color():
 #Importation de la bdd
 
 df = pd.read_excel('app/database.xlsx')
-df.columns = ['Nom','Acronyme', 'Niveau', 'Pole', 'Domaine_principal', 'Domaine',  'Nature', 'Influence', 'Interaction', 'Doublon', 'Commentaires', 'Site',1,2]
+df.columns = ['Nom','Acronyme', 'Niveau', 'Pole', 'Domaine_principal', 'Domaine',  'Nature', 'Influence', 'Interaction', 'Doublon', 'Commentaires', 'Site', 1, 2]
 # Correction du FutureWarning : conversion explicite avant fillna
 for col in df.columns:
     if df[col].dtype == 'float64' or df[col].dtype == 'int64':
@@ -159,7 +159,7 @@ for idx, d in enumerate(nature_unique):
             rgb = generate_random_color()
         couleur_dico[d] = rgb
 
-shape_liste = ['hexagon', 'rectangle', 'triangle', 'diamond', 'pentagon', 'octogon', 'barrel']
+shape_liste = ['octagon', 'rectangle', 'triangle', 'diamond', 'pentagon', 'octogon', 'hexagon']
 
 for i in range(len(niveau_unique)):
     forme_dico[niveau_unique[i]] = shape_liste[i]
@@ -205,7 +205,7 @@ for row in df.itertuples():
 
     if row.Influence != 'nan':
         label_size = str(int(row.Influence) * 3 + 10)
-        taille = str(10 + int(row.Influence) * 6)
+        taille = str(10 + int(row.Influence) * 9)
     else:
         label_size = 15
     ligne = [ shape, couleur, taille, acronyme, l_color, label_size]
@@ -451,7 +451,12 @@ def genere_sous_graphe(dom_princ, nl, domaine_liste):
             new_edges.append({'data': {'source': source, 'target': dom}})
             d_angles_npd[dom] += 1
 
-    
+    for dom in d_angles_npd.keys():
+        if d_angles_npd[dom] == 0:
+            node_liste.remove(dom)
+            new_edges = [edge for edge in new_edges if
+                    edge['data']['source'] != dom and
+                    edge['data']['target'] != dom]
 
 
     elements = [

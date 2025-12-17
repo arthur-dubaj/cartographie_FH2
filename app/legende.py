@@ -60,7 +60,18 @@ def create_shape_legend(shape_type, label):
                      'borderRight': '10px solid transparent', 'borderBottom': f'18px solid {FH_BLUE}',
                      'backgroundColor': 'transparent'},
         'rectangle': {'borderRadius': '2px'},
-        'diamond': {'width': '14px', 'height': '14px', 'transform': 'rotate(45deg)'}
+        'diamond': {'width': '18px', 'height': '18px',
+                    'backgroundColor': FH_BLUE, 
+                    'clipPath': 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'},
+        'hexagon': {'width': '18px', 'height': '18px',
+                    'backgroundColor': FH_BLUE, 
+                    'clipPath': 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)'},
+        'pentagon': {'width': '18px', 'height': '18px',
+                    'backgroundColor': FH_BLUE, 
+                    'clipPath': 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)'},
+        'octagon': {'width': '18px', 'height': '18px',
+                    'backgroundColor': FH_BLUE, 
+                    'clipPath': 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'}
     }
     
     base_style = {
@@ -143,10 +154,10 @@ legende = html.Div([
     # Section Niveau
     html.Div([
         html.H4('Niveau géographique', style=section_title_style),
-        create_shape_legend('circle', utils.niveau_unique[0] if len(utils.niveau_unique) > 0 else 'International'),
-        create_shape_legend('triangle', utils.niveau_unique[2] if len(utils.niveau_unique) > 2 else 'Europe'),
-        create_shape_legend('rectangle', utils.niveau_unique[1] if len(utils.niveau_unique) > 1 else 'France'),
-        create_shape_legend('diamond', utils.niveau_unique[3] if len(utils.niveau_unique) > 3 else 'Local'),
+        html.Div([
+            create_shape_legend(utils.forme_dico[niveau], niveau)
+            for niveau in utils.niveau_unique
+        ])
     ], style=section_style),
     
     # Section Nature
@@ -177,13 +188,6 @@ legende = html.Div([
         create_border_legend('rgb(117, 117, 117)', 'Pas de doublon'),
     ], style=section_style),
     
-    # Section Pôles
-    html.Div([
-        html.H4('Pôles principaux', style=section_title_style),
-        create_color_legend(FH_BLUE, 'Produire'),
-        create_color_legend(FH_GREEN, 'Utiliser'),
-        create_color_legend(FH_ORANGE, 'Déployer'),
-    ], style=section_style),
     
     # Instructions d'utilisation
     html.Div([
